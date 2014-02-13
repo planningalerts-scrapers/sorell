@@ -23,14 +23,8 @@ foreach($dom->find("table.docmanlist") as $data){
             $id_messy = trim($elements[0]);
             $id_explode = explode(" ", $id_messy);
             $representations = explode("Representations Close", $elements[2]);
-            $date_scraped = date('c', strtotime("now"));
+            $date_scraped = date('Y/m/d', strtotime("now"));
             $council_reference = $id_explode[0];
-            
-            //print "council_reference: " . $id_explode[0];
-            //print "address: " . $elements[1] . ", TAS";
-            //print "on_notice_to: " . date('c', strtotime(trim($representations[1])));
-            //print "info_url: http://www.sorell.tas.gov.au" . $text->href;
-            //print "date_scraped: " . $date_scraped;
             
             //Saving data:
             $unique_keys = array('council_reference'=>$council_reference);
