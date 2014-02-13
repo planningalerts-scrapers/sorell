@@ -8,57 +8,51 @@ $html = scraperwiki::scrape("http://www.sorell.tas.gov.au/planning-building/plan
 $dom = new simple_html_dom();
 $dom->load($html);
 
-$planning_alert = array();
-
 $comment_url = "http://www.sorell.tas.gov.au/planning-building/planning/item/282";
 $description = "";
 
 foreach($dom->find("table.docmanlist") as $data){
     $application_lists = $data->find("td.name");
-    $closing_dates = $data->find("td.center");
+    
     foreach ($application_lists as $app)
     {
-
         $application_text = $app->find("a.name");
         foreach ($application_text as $text)
         {
             $elements = explode(" - ", $text->innertext);
             $id_messy = trim($elements[0]);
             $id_explode = explode(" ", $id_messy);
-            //print "council_reference: " . $id_explode[0];
-            //print " | ";
-            //print "address: " . $elements[1] . ", TAS";
-            
-            //print " | ";
             $representations = explode("Representations Close", $elements[2]);
-            //print "on_notice_to: " . date('c', strtotime(trim($representations[1])));
-            //print " | ";
-            //print "info_url: http://www.sorell.tas.gov.au" . $text->href;
             $date_scraped = date('c', strtotime("now"));
+            $council_reference = $id_explode[0];
+            
+            //print "council_reference: " . $id_explode[0];
+            //print "address: " . $elements[1] . ", TAS";
+            //print "on_notice_to: " . date('c', strtotime(trim($representations[1])));
+            //print "info_url: http://www.sorell.tas.gov.au" . $text->href;
             //print "date_scraped: " . $date_scraped;
             
             //Saving data:
-            $unique_keys = array($id_explode[0]);
+            $unique_keys = array('council_reference'=>$council_reference);
             $row = array('council_reference'=>$id_explode[0], 'address'=>$elements[1], 'description'=>$description, 
-                'info_url'=>$text->href, 'comment_url'=>$comment_url, 'date_scraped'=>$date_scraped);
-            
-            $data_sql = scraperwiki::select("* from swdata");
-            
-            print_r($data_sql);
-            
-            //scraperwiki::save_sqlite($unique_keys, $row);
-            
-            print "\n\n";
-            
-        }
-        
-        
+                'info_url'=>'http://www.sorell.tas.gov.au'.$text->href, 'comment_url'=>$comment_url, 'date_scraped'=>$date_scraped);
+          
+            //Check to see if the record has already been inserted into the database.
+            if (scraperwiki::get_var($council_reference) == "")
+            {
+              //No record found. Insert.
+              print "New application found. Inserting ".$council_reference."\n";
+              scraperwiki::save_sqlite($unique_keys, $row, 'data');
+              scraperwiki::save_var($council_reference, $council_reference);
+            }
+            else 
+            {
+              //Record is found, so skip.
+              print "Record found. Skipping ".$council_reference."\n";
+            }
+        } 
     }
-
 }
-
-
-
 
 ?>
 
