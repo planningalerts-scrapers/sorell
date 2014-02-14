@@ -23,7 +23,7 @@ foreach($dom->find("table.docmanlist") as $data){
             $id_messy = trim($elements[0]);
             $id_explode = explode(" ", $id_messy);
             $representations = explode("Representations Close", $elements[2]);
-            $date_scraped = date('Y/m/d', strtotime("now"));
+            $date_scraped = date('Y-m-d', strtotime("now"));
             $council_reference = $id_explode[0];
             
             //Saving data:
