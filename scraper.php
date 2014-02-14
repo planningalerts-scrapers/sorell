@@ -28,7 +28,7 @@ foreach($dom->find("table.docmanlist") as $data){
             
             //Saving data:
             $unique_keys = array('council_reference'=>$council_reference);
-            $row = array('council_reference'=>$id_explode[0], 'address'=>$elements[1], 'description'=>$description, 
+            $row = array('council_reference'=>$id_explode[0], 'address'=>$elements[1].", TAS", 'description'=>$description, 
                 'info_url'=>'http://www.sorell.tas.gov.au'.$text->href, 'comment_url'=>$comment_url, 'date_scraped'=>$date_scraped);
           
             //Check to see if the record has already been inserted into the database.
