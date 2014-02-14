@@ -9,7 +9,7 @@ $dom = new simple_html_dom();
 $dom->load($html);
 
 $comment_url = "http://www.sorell.tas.gov.au/planning-building/planning/item/282";
-$description = "Description not available. See PDF file";
+$description = "Description not available. See 'Read more information' link.";
 
 foreach($dom->find("table.docmanlist") as $data){
     $application_lists = $data->find("td.name");
