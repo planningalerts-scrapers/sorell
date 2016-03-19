@@ -25,7 +25,7 @@ doc.search('a').each do |url|
     'on_notice_to' => representations_close_date,
     # 'date_received' => date_received,
     'address' => address,
-    # 'description' => rows[1],
+    'description' => "Description not available. See 'Read more information' link.",
     'date_scraped' => Date.today.to_s
   }
 
