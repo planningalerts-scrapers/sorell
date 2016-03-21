@@ -16,7 +16,11 @@ doc.search('a').each do |url|
   representations_close = url.text.split(" - ").last.gsub(/Representations Close (Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday) /i, '').gsub(/(nd|st|rd|th)/i, '')
   representations_close_date = DateTime.strptime(representations_close, '%d %B %Y') rescue nil
 
-  address = url.text.split(" - ")[1..-2].join(" - ")
+  address = url.text.split(" - ")[1..-2].select{|fragment|
+    # Remove any common added extras 
+    ["Re-Advertised"].index(fragment).nil? 
+  }.join(" - ")
+
 
   record = {
     'info_url' => url[:href].to_s,
@@ -24,7 +28,7 @@ doc.search('a').each do |url|
     'council_reference' => council_ref,
     'on_notice_to' => representations_close_date,
     # 'date_received' => date_received,
-    'address' => address,
+    'address' => "#{address}, TAS},
     'description' => "Description not available. See 'Read more information' link.",
     'date_scraped' => Date.today.to_s
   }
