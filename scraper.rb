@@ -28,7 +28,7 @@ doc.search('a').each do |url|
     'council_reference' => council_ref,
     'on_notice_to' => representations_close_date,
     # 'date_received' => date_received,
-    'address' => "#{address}, TAS},
+    'address' => "#{address}, TAS",
     'description' => "Description not available. See 'Read more information' link.",
     'date_scraped' => Date.today.to_s
   }
