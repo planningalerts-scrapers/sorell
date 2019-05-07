@@ -34,10 +34,6 @@ doc.search('a').each do |url|
   }
 
   # puts record.inspect
-  if (ScraperWiki.select("* from data where `council_reference`='#{record['council_reference']}'").empty? rescue true) 
-    ScraperWiki.save_sqlite(['council_reference'], record)
-    puts "Saving " + council_ref
-  else
-    puts "Skipping already saved record " + council_ref
-  end
+  ScraperWiki.save_sqlite(['council_reference'], record)
+  puts "Saving " + council_ref
 end
