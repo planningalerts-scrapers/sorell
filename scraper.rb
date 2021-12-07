@@ -5,7 +5,7 @@ require 'mechanize'
 starting_url = 'http://www.sorell.tas.gov.au/publications/currently-advertised-applications/'
 
 agent = Mechanize.new
-agent.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
 
 # Grab the starting page and go into each link to get a more reliable data format.
 doc = agent.get(starting_url)
