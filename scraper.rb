@@ -1,5 +1,4 @@
 require 'scraperwiki'
-require 'rubygems'
 require 'mechanize'
 
 starting_url = 'http://www.sorell.tas.gov.au/publications/currently-advertised-applications/'
@@ -35,5 +34,5 @@ doc.search('a').each do |url|
 
   # puts record.inspect
   ScraperWiki.save_sqlite(['council_reference'], record)
-  puts "Saving " + council_ref
+  puts "Saving " + council_ref.strip()
 end
