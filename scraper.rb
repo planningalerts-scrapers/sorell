@@ -11,6 +11,7 @@ doc = agent.get(starting_url)
 
 doc.search('a').each do |url|
   next unless url[:href].to_s.match(/\.pdf/)
+  next unless url[:href].to_s.downcase.include?("development-application")
 
   council_ref = url.text.split(" - ").first
   representations_close = url.text.split(" - ").last.gsub(/Representations Close (Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday) /i, '').gsub(/(nd|st|rd|th)/i, '')
