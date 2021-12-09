@@ -19,7 +19,7 @@ def scrape()
   doc.search('a').each do |url|
     next unless url[:href].to_s.match(/\.pdf/)
     next unless url[:href].to_s.downcase.include?("development-application")
-    puts url[:href]
+
     council_ref_array = url[:href].to_s.split("/").last.split("-").first.split(".")
     council_ref = council_ref_array[-2].to_s + "-" +council_ref_array[-1].to_s
     representations_close = url.text.split(" - ").last.gsub(/Representations Close (Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday) /i, '').gsub(/(nd|st|rd|th)/i, '')
@@ -53,17 +53,14 @@ def get_address_from_url(url)
   url_split = url.to_s.split("-")
 
   url_split.each do |a|
-      if a.to_s.downcase == "application"
-          application_found = true
-      end
       if a.to_s.downcase == "representation" || a.to_s.downcase == "representations"
           representations_found = true
       end
-
       if application_found && !representations_found
-          if a.to_s.downcase != "application"
-              address += " " + a.to_s
-          end
+          address += " " + a.to_s
+      end
+      if a.to_s.downcase == "application"
+          application_found = true
       end
   end
   address = address.strip
