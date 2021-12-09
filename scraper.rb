@@ -6,6 +6,13 @@ def scrape()
 
   agent = Mechanize.new
 
+  if ENV["MORPH_AUSTRALIAN_PROXY"]
+    # On morph.io set the environment variable MORPH_AUSTRALIAN_PROXY to
+    agent.agent.set_proxy(ENV["MORPH_AUSTRALIAN_PROXY"])
+  end
+
+  agent.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
   # Grab the starting page and go into each link to get a more reliable data format.
   doc = agent.get(starting_url)
 
