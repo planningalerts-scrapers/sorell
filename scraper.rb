@@ -11,16 +11,33 @@ doc = agent.get(starting_url)
 
 doc.search('a').each do |url|
   next unless url[:href].to_s.match(/\.pdf/)
+  next unless url[:href].to_s.downcase.include?("development-application")
 
-  council_ref = url.text.split(" - ").first
+  # Getting the council reference for this development application
+  council_ref_array = url[:href].to_s.split("/").last.split("-").first.split(".")
+  council_ref = council_ref_array[-2].to_s + "-" +council_ref_array[-1].to_s
+
   representations_close = url.text.split(" - ").last.gsub(/Representations Close (Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday) /i, '').gsub(/(nd|st|rd|th)/i, '')
   representations_close_date = DateTime.strptime(representations_close, '%d %B %Y') rescue nil
 
-  address = url.text.split(" - ")[1..-2].select{|fragment|
-    # Remove any common added extras 
-    ["Re-Advertised"].index(fragment).nil? 
-  }.join(" - ")
+  address = ""
+  application_found = false
+  representations_found = false
 
+  url_split = url.to_s.split("-")
+
+  url_split.each do |a|
+      if a.to_s.downcase == "representation" || a.to_s.downcase == "representations"
+          representations_found = true
+      end
+      if application_found && !representations_found
+          address += " " + a.to_s
+      end
+      if a.to_s.downcase == "application"
+          application_found = true
+      end
+  end
+  address = address.strip
 
   record = {
     'info_url' => url[:href].to_s,
