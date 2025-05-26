@@ -1,5 +1,4 @@
 require 'scraperwiki'
-require 'rubygems'
 require 'mechanize'
 
 starting_url = 'http://www.sorell.tas.gov.au/publications/currently-advertised-applications/'
